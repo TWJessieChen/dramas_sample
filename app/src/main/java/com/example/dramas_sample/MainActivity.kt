@@ -1,5 +1,7 @@
 package com.example.dramas_sample
 
+import android.content.Context
+import android.net.wifi.WifiManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -11,6 +13,11 @@ import kotlinx.coroutines.launch
 class MainActivity : AppCompatActivity() {
     private val TAG = MainActivity::class.java.simpleName
 
+    private lateinit var wifiManager: WifiManager
+
+    private var isWifiEnabled : Boolean = false
+
+
     private val viewModel by lazy {
         MainViewModel()
     }
@@ -21,12 +28,32 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        wifiManager = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        // Enable Wi-Fi
+        if (wifiManager.isWifiEnabled == false) {
+            Toast.makeText(this, R.string.prompt_enabling_wifi, Toast.LENGTH_SHORT).show()
+            isWifiEnabled = true
+        }
+
     }
 
     override fun onResume() {
         super.onResume()
         scope.launch {
-            val tasks = viewModel.httpDramasDataRequest()
+
+            if(isWifiEnabled) {
+                val tasks = viewModel.httpDramasDataRequest()
+            } else {
+                //當沒有網路時，走Load database流程
+
+            }
+
         }
     }
 
@@ -34,8 +61,9 @@ class MainActivity : AppCompatActivity() {
         super.onPause()
     }
 
-
-
+    override fun onStop() {
+        super.onStop()
+    }
 
     override fun onDestroy() {
         super.onDestroy()

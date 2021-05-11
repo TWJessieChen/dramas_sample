@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">dramas_sample</string>
+
+    <string name="prompt_enabling_wifi">Enabling Wi-Fi&#8230;</string>
+
+
 </resources>
