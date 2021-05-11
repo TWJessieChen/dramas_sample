@@ -39,6 +39,8 @@ class MainActivity : AppCompatActivity() {
         if (wifiManager.isWifiEnabled == false) {
             Toast.makeText(this, R.string.prompt_enabling_wifi, Toast.LENGTH_SHORT).show()
             isWifiEnabled = true
+        } else {
+            Toast.makeText(this, R.string.prompt_disabling_wifi, Toast.LENGTH_SHORT).show()
         }
 
     }
