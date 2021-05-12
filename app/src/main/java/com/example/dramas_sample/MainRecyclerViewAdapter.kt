@@ -20,6 +20,8 @@ class MainRecyclerViewAdapter(private val context: Context,
 
     private val TAG = MainRecyclerViewAdapter::class.java.simpleName
 
+
+
     override fun getItemCount(): Int = dataList?.size ?: 0
 
     override fun onBindViewHolder(holder: MainRecyclerViewHolder, position: Int) {
@@ -41,7 +43,9 @@ class MainRecyclerViewAdapter(private val context: Context,
 
         holder.tv_createdAt.text = data.created_at
 
-        holder.tv_rating.text = data.rating!!.toBigDecimal().toPlainString()
+        holder.tv_rating.text = data.rating
+
+//        holder.tv_rating.text = data.rating!!.toBigDecimal().toPlainString()
 
     }
 

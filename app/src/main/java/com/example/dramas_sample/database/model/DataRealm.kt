@@ -8,7 +8,7 @@ open class DataRealm (
     var drama_id: Int? = 0,
     var created_at: String? = "",
     var name: String? = "",
-    var rating: Double? = 0.0,
+    var rating: String? = "0.0",
     var thumb: String? = "",
     var total_views: Int? = 0,
     var base64Thumb: String? = ""
@@ -18,7 +18,7 @@ open class DataRealm (
         drama_id: Int = this.drama_id!!,
         created_at: String = this.created_at!!,
         name: String = this.name!!,
-        rating: Double = this.rating!!,
+        rating: String = this.rating!!,
         thumb: String = this.thumb!!,
         total_views: Int = this.total_views!!,
         base64Thumb: String = this.base64Thumb!!

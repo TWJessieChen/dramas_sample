@@ -32,6 +32,8 @@ class MainViewModel  : ViewModel() {
 
     val dramaList = MutableLiveData<RealmResults<DataRealm>>()
 
+    val dramaFilterList = MutableLiveData<RealmResults<DataRealm>>()
+
     val ioScope = CoroutineScope(Dispatchers.IO + viewModelJob)
 
     init {
@@ -43,6 +45,21 @@ class MainViewModel  : ViewModel() {
 
             dramaList.postValue(response)
 
+        }
+    }
+
+    fun searchText(filterStr: String) {
+        viewModelScope.launch {
+
+            var response: RealmResults<DataRealm>? = null
+
+            if (filterStr.isEmpty()) {
+                response = JCDatabaseManager.query(realm!!)
+            } else {
+                response = JCDatabaseManager.queryFilter(filterStr, realm!!)
+            }
+
+            dramaFilterList.postValue(response!!)
         }
     }
 

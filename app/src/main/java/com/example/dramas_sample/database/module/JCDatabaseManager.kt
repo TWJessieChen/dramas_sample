@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.dramas_sample.data.Data
 import com.example.dramas_sample.data.DramaList
 import com.example.dramas_sample.database.model.DataRealm
+import io.realm.Case
 import io.realm.Realm
 import io.realm.RealmResults
 
@@ -16,6 +17,23 @@ object JCDatabaseManager {
 
         realm.executeTransaction{
             dataListRealmResult = realm.where<DataRealm>(DataRealm::class.java).findAll()
+        }
+
+        return dataListRealmResult!!
+    }
+
+    fun queryFilter(filterStr: String, realm: Realm) : RealmResults<DataRealm> {
+
+        var dataListRealmResult: RealmResults<DataRealm>? = null
+
+        realm.executeTransaction{
+            dataListRealmResult = realm.where<DataRealm>(DataRealm::class.java).
+            contains("name", filterStr, Case.INSENSITIVE).
+            or().
+            contains("rating", filterStr, Case.INSENSITIVE).
+            or().
+            contains("created_at", filterStr, Case.INSENSITIVE).
+            findAll()
         }
 
         return dataListRealmResult!!
@@ -36,7 +54,7 @@ object JCDatabaseManager {
                     val newDataInfo = DataRealm(data.dramaId,
                         data.createdAt,
                         data.name,
-                        data.rating,
+                        data.rating.toString(),
                         data.thumb,
                         data.dramaId,
                         "")
