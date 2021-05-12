@@ -1,5 +1,6 @@
 package com.example.dramas_sample
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -91,8 +92,24 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.dramaList.observe(this, object : Observer<RealmResults<DataRealm>> {
             override fun onChanged(t: RealmResults<DataRealm>?) {
+                Log.d(TAG,"viewModel dramaList observe: " + t!!.size)
                 dramaResults = t
                 initView()
+
+                if(!isWifiEnabled) {
+                    AlertDialog.Builder(this@MainActivity)
+                        .setTitle(R.string.warring)
+                        .setMessage(R.string.intent_settings_app)
+                        .setPositiveButton(R.string.ok) { _, _ ->
+                            val dialogIntent = Intent(android.provider.Settings.ACTION_SETTINGS)
+                            dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            startActivity(dialogIntent)
+                        }
+                        .setNeutralButton(R.string.cancel) { _, _ ->
+                        }
+                        .show()
+                }
+
             }
         })
 
@@ -165,9 +182,6 @@ class MainActivity : AppCompatActivity() {
 
             if(isWifiEnabled) {
                 val tasks = viewModel.httpDramasDataRequest()
-            } else {
-                //當沒有網路時，走Load database流程
-
             }
 
         }
