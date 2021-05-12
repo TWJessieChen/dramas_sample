@@ -4,14 +4,13 @@ import android.util.Log
 import com.example.dramas_sample.data.Data
 import com.example.dramas_sample.data.DramaList
 import com.example.dramas_sample.database.model.DataRealm
-import com.example.dramas_sample.http.HttpGetMethod
 import io.realm.Realm
 import io.realm.RealmResults
 
 object JCDatabaseManager {
     private val TAG = JCDatabaseManager::class.java.simpleName
 
-    suspend fun query(realm: Realm) : RealmResults<DataRealm> {
+    fun query(realm: Realm) : RealmResults<DataRealm> {
 
         var dataListRealmResult: RealmResults<DataRealm>? = null
 
@@ -22,7 +21,7 @@ object JCDatabaseManager {
         return dataListRealmResult!!
     }
 
-    suspend fun insert(dataList : DramaList, realm: Realm) {
+    fun insert(dataList : DramaList, realm: Realm) {
 
         Log.d(TAG, "insert: " + dataList.data.size)
 
@@ -49,10 +48,20 @@ object JCDatabaseManager {
                 Log.d(TAG, "Not need insert data!!!")
             }
         }
-
     }
 
+    fun updateBitmap(data : Data, base64Str: String, realm: Realm) {
 
+        realm.executeTransaction{
+
+            val dataRealmResult = realm.where<DataRealm>(DataRealm::class.java)
+                .equalTo("drama_id", data.dramaId)
+                .findFirst()
+
+            dataRealmResult!!.base64Thumb = base64Str
+        }
+
+    }
 
 
 

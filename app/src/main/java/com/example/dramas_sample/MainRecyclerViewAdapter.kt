@@ -7,8 +7,8 @@ import android.view.ViewGroup;
 import android.widget.*
 
 import androidx.recyclerview.widget.RecyclerView;
-import com.bumptech.glide.Glide
 import com.example.dramas_sample.database.model.DataRealm
+import com.example.dramas_sample.utils.BitmapAndBase64StringToolUtil
 import io.realm.OrderedRealmCollection;
 import io.realm.RealmRecyclerViewAdapter;
 
@@ -25,10 +25,13 @@ class MainRecyclerViewAdapter(private val context: Context,
     override fun onBindViewHolder(holder: MainRecyclerViewHolder, position: Int) {
         val data: DataRealm = dataList?.get(position) ?: return
 
-        Glide.with(context)
-            .load(data.thumb)
-            .error(R.mipmap.ic_launcher)
-            .into(holder.iv_thumb)
+        //目前不需要使用Glide方式去動態下載圖片了，改用base64方式load bitmap
+//        Glide.with(context)
+//            .load(data.thumb)
+//            .error(R.mipmap.ic_launcher)
+//            .into(holder.iv_thumb)
+
+        holder.iv_thumb.setImageBitmap(BitmapAndBase64StringToolUtil.convertStringToBitmap(data.base64Thumb!!))
 
         holder.container.setOnClickListener{
             listener.onItemClick(data)

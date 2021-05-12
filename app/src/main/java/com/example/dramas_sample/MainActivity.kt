@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.wifi.WifiManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.Toast
@@ -58,6 +59,9 @@ class MainActivity : AppCompatActivity() {
             val adapter =
                 MainRecyclerViewAdapter(MainApplication.appContext!!, dramaResults, object : MainRecyclerViewAdapter.OnItemClickListener {
                     override fun onItemClick(item: DataRealm) {
+
+                        Log.d(TAG,"onItemClick: " + item.name)
+
                     }
                 }, true)
 

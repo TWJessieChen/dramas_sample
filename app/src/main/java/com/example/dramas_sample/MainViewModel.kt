@@ -1,25 +1,26 @@
 package com.example.dramas_sample
 
-import android.content.Context
-import android.net.ConnectivityManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.util.Base64
 import android.util.Log
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.lifecycle.*
-import com.example.dramas_sample.data.Data
-import com.example.dramas_sample.data.DramaList
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.bumptech.glide.Glide
+import com.example.dramas_sample.application.MainApplication
 import com.example.dramas_sample.database.model.DataRealm
 import com.example.dramas_sample.database.module.JCDatabaseManager
 import com.example.dramas_sample.database.module.JCRealmConfiguration
-import com.example.dramas_sample.http.DramaContact
 import com.example.dramas_sample.http.HttpGetMethod
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import com.google.gson.reflect.TypeToken
+import com.example.dramas_sample.utils.BitmapAndBase64StringToolUtil
 import io.realm.Realm
 import io.realm.RealmResults
-import kotlinx.coroutines.*
-import okhttp3.*
-import java.io.IOException
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
+import java.io.ByteArrayOutputStream
 
 
 class MainViewModel  : ViewModel() {
@@ -30,6 +31,8 @@ class MainViewModel  : ViewModel() {
     private val viewModelJob = SupervisorJob()
 
     val dramaList = MutableLiveData<RealmResults<DataRealm>>()
+
+    val ioScope = CoroutineScope(Dispatchers.IO + viewModelJob)
 
     init {
         viewModelScope.launch {
@@ -52,13 +55,39 @@ class MainViewModel  : ViewModel() {
 
                 JCDatabaseManager.insert(resultList.third, realm!!)
 
+                ioScope.launch {
+                    for(data in resultList.third.data) {
+                        try {
+
+                            val bitmap: Bitmap = Glide
+                                .with(MainApplication.appContext!!)
+                                .asBitmap()
+                                .load(data.thumb)
+                                .submit()
+                                .get()
+
+                            Log.d(TAG,"width: " + bitmap.width + " height: " + bitmap.height)
+
+                            val base64Str = BitmapAndBase64StringToolUtil.convertBitmapToBase64String(bitmap)
+
+                            viewModelScope.launch {
+                                JCDatabaseManager.updateBitmap(data, base64Str!!, realm!!)
+                            }
+
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    }
+                }
+
+
+
             } else {
                 Log.d(TAG, "Error: " + resultList.second)
             }
         }
 
     }
-
 
     override fun onCleared() {
         super.onCleared()
