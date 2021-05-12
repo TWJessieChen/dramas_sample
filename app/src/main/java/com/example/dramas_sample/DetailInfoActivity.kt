@@ -1,22 +1,13 @@
 package com.example.dramas_sample
 
-import android.content.Context
-import android.net.wifi.WifiManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.ImageView
-import android.widget.ProgressBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.dramas_sample.application.MainApplication
 import com.example.dramas_sample.database.model.DataRealm
 import com.example.dramas_sample.utils.BitmapAndBase64StringToolUtil
-import io.realm.RealmChangeListener
 import io.realm.RealmResults
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel

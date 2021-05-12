@@ -1,8 +1,6 @@
 package com.example.dramas_sample
 
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.util.Base64
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -20,7 +18,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
-import java.io.ByteArrayOutputStream
 
 
 class MainViewModel  : ViewModel() {
