@@ -48,13 +48,15 @@ class DetailInfoActivity : AppCompatActivity() {
                     val tv_name: TextView = findViewById(R.id.tv_name)
                     val tv_createdAt: TextView = findViewById(R.id.tv_createdAt)
                     val tv_rating: TextView = findViewById(R.id.tv_rating)
+                    val total_views: TextView = findViewById(R.id.total_views)
 
                     for(data in t!!) {
                         if(data.drama_id!!.equals(dramaId)) {
                             iv_thumb.setImageBitmap(BitmapAndBase64StringToolUtil.convertStringToBitmap(data.base64Thumb!!))
-                            tv_name.text = data.name
-                            tv_createdAt.text = data.created_at
-                            tv_rating.text = data.rating!!.toBigDecimal().toPlainString()
+                            tv_name.text = "名稱: " + data.name
+                            tv_createdAt.text = "出版日期: " + data.created_at
+                            tv_rating.text = "評分 : " + data.rating
+                            total_views.text = "觀看次數: " + data.total_views.toString()
                         }
                     }
                 }
