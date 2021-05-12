@@ -1,6 +1,7 @@
 package com.example.dramas_sample
 
 import android.content.Context
+import android.content.Intent
 import android.net.wifi.WifiManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -59,8 +60,13 @@ class MainActivity : AppCompatActivity() {
             val adapter =
                 MainRecyclerViewAdapter(MainApplication.appContext!!, dramaResults, object : MainRecyclerViewAdapter.OnItemClickListener {
                     override fun onItemClick(item: DataRealm) {
-
                         Log.d(TAG,"onItemClick: " + item.name)
+
+                        val intent = Intent(MainApplication.appContext, DetailInfoActivity::class.java)
+                        val extras = Bundle()
+                        extras.putInt("EXTRA_DRAMA_ID", item.drama_id!!)
+                        intent.putExtra("Bundle",extras)
+                        startActivity(intent)
 
                     }
                 }, true)
