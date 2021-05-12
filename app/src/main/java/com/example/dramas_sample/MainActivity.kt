@@ -2,6 +2,7 @@ package com.example.dramas_sample
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.wifi.WifiManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -25,6 +26,8 @@ import kotlinx.coroutines.launch
 class MainActivity : AppCompatActivity() {
     private val TAG = MainActivity::class.java.simpleName
 
+    private val WORD = "WORD"
+
     private var progressBar: ProgressBar? = null
 
     private lateinit var wifiManager: WifiManager
@@ -36,6 +39,8 @@ class MainActivity : AppCompatActivity() {
     private var recyclerView : RecyclerView? = null
 
     private var dramaResults: RealmResults<DataRealm>? = null
+
+    private var editor: SharedPreferences.Editor? = null
 
     private val viewModel by lazy {
         MainViewModel()
@@ -55,9 +60,13 @@ class MainActivity : AppCompatActivity() {
 
                 viewModel.searchText(newText!!)
 
+                editor!!.putString(WORD, newText).apply()
+
                 return true
             }
         })
+
+        searchView.setQuery(MainApplication.pref!!.getString(WORD, ""), false)
 
         return true
     }
@@ -68,6 +77,17 @@ class MainActivity : AppCompatActivity() {
 
         progressBar = findViewById<ProgressBar>(R.id.progress_Bar) as ProgressBar
         progressBar!!.visibility = View.INVISIBLE
+
+        recyclerView = findViewById(R.id.recycler_view)
+        recyclerView!!.setHasFixedSize(true)
+        recyclerView!!.layoutManager = LinearLayoutManager(MainApplication.appContext!!)
+
+        editor = MainApplication.pref!!.edit()
+
+        val filterWord = MainApplication.pref!!.getString(WORD, "")
+        if(!filterWord.equals("")) {
+            viewModel.searchText(filterWord!!)
+        }
 
         viewModel.dramaList.observe(this, object : Observer<RealmResults<DataRealm>> {
             override fun onChanged(t: RealmResults<DataRealm>?) {
@@ -116,9 +136,6 @@ class MainActivity : AppCompatActivity() {
                     }
                 }, true)
 
-            recyclerView = findViewById(R.id.recycler_view)
-            recyclerView!!.setHasFixedSize(true)
-            recyclerView!!.layoutManager = LinearLayoutManager(MainApplication.appContext!!)
             recyclerView!!.adapter = adapter
 
             dramaResults!!.addChangeListener(RealmChangeListener { element ->

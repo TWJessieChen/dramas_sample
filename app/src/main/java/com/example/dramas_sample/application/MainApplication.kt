@@ -3,6 +3,7 @@ package com.example.dramas_sample.application
 import android.app.Application
 import android.content.ContentResolver
 import android.content.Context
+import android.content.SharedPreferences
 import android.util.Log
 import io.realm.Realm
 
@@ -20,6 +21,8 @@ class MainApplication  : Application() {
 
         appContext = applicationContext
 
+        pref = applicationContext.getSharedPreferences("FILTER_WORD", Context.MODE_PRIVATE)
+
     }
 
 
@@ -29,6 +32,7 @@ class MainApplication  : Application() {
             private set
         var appContext: Context? = null
 
+        var pref: SharedPreferences? = null
     }
 
 
