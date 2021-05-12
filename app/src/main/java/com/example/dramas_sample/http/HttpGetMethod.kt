@@ -9,12 +9,10 @@ import okhttp3.Request
 import okio.IOException
 import ru.gildor.coroutines.okhttp.await
 
-
-
 object HttpGetMethod {
     private val TAG = HttpGetMethod::class.java.simpleName
 
-    suspend fun getDramasDataRequest() : DramaList {
+    suspend fun getDramasDataRequest() : Triple<Boolean, String, DramaList> {
 
         var resultList: DramaList? = null
 
@@ -30,11 +28,12 @@ object HttpGetMethod {
             // Catch original exception
             // Use some logger that will write line number to logs, so you can find the source of exception
             // or just wrap exception and throw it to get stacktrace
-            throw IOException("Some additional debug info: ${e.message}", e)
+//            throw IOException("Some additional debug info: ${e.message}", e)
+            return Triple(false, e.message.toString(), resultList!!)
         }
 
         Log.d(TAG, "" + resultList!!.data.size)
-        return resultList!!
+        return Triple(true, "", resultList!!)
     }
 
 }

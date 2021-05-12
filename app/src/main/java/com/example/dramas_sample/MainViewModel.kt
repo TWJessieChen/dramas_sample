@@ -1,21 +1,23 @@
 package com.example.dramas_sample
 
-//import com.example.dramas_sample.database.DataRealm
-
 import android.content.Context
 import android.net.ConnectivityManager
 import android.util.Log
 import androidx.core.content.ContextCompat.getSystemService
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.example.dramas_sample.data.Data
 import com.example.dramas_sample.data.DramaList
+import com.example.dramas_sample.database.model.DataRealm
+import com.example.dramas_sample.database.module.JCDatabaseManager
+import com.example.dramas_sample.database.module.JCRealmConfiguration
 import com.example.dramas_sample.http.DramaContact
 import com.example.dramas_sample.http.HttpGetMethod
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import io.realm.Realm
+import io.realm.RealmResults
+import kotlinx.coroutines.*
 import okhttp3.*
 import java.io.IOException
 
@@ -23,20 +25,45 @@ import java.io.IOException
 class MainViewModel  : ViewModel() {
     private val TAG = MainViewModel::class.java.simpleName
 
-//    val dramas = MutableLiveData<DataRealm>()
+    private var realm : Realm? = null
 
-    suspend fun httpDramasDataRequest() {
-        withContext(Dispatchers.IO) {
+    private val viewModelJob = SupervisorJob()
 
-            val resultList = HttpGetMethod.getDramasDataRequest()
+    val dramaList = MutableLiveData<RealmResults<DataRealm>>()
 
-            Log.d(TAG, "" + resultList.data.size)
+    init {
+        viewModelScope.launch {
 
+            realm = JCRealmConfiguration.getDramasInstance()
 
+            val response = JCDatabaseManager.query(realm!!)
+
+            dramaList.postValue(response)
 
         }
     }
 
+    suspend fun httpDramasDataRequest() {
+        viewModelScope.launch {
+            val resultList = HttpGetMethod.getDramasDataRequest()
+
+            if(resultList.first) {
+                Log.d(TAG, "" + resultList.third.data.size)
+
+                JCDatabaseManager.insert(resultList.third, realm!!)
+
+            } else {
+                Log.d(TAG, "Error: " + resultList.second)
+            }
+        }
+
+    }
 
 
+    override fun onCleared() {
+        super.onCleared()
+        realm!!.close()
+        realm = null
+        viewModelJob.cancel()
+    }
 }

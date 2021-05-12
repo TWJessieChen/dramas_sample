@@ -4,8 +4,16 @@ import android.content.Context
 import android.net.wifi.WifiManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.ProgressBar
 import android.widget.Toast
-import com.example.dramas_sample.database.JCDatabaseManager
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.dramas_sample.application.MainApplication
+import com.example.dramas_sample.database.model.DataRealm
+import io.realm.RealmChangeListener
+import io.realm.RealmResults
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
@@ -13,10 +21,13 @@ import kotlinx.coroutines.launch
 class MainActivity : AppCompatActivity() {
     private val TAG = MainActivity::class.java.simpleName
 
+    private var progressBar: ProgressBar? = null
+
     private lateinit var wifiManager: WifiManager
 
     private var isWifiEnabled : Boolean = false
 
+    private var dramaResults: RealmResults<DataRealm>? = null
 
     private val viewModel by lazy {
         MainViewModel()
@@ -28,8 +39,39 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        progressBar = findViewById<ProgressBar>(R.id.progress_Bar) as ProgressBar
+        progressBar!!.visibility = View.INVISIBLE
+
+        viewModel.dramaList.observe(this, object : Observer<RealmResults<DataRealm>> {
+            override fun onChanged(t: RealmResults<DataRealm>?) {
+                dramaResults = t
+                initView()
+            }
+        })
+
         wifiManager = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
 
+    }
+
+    private fun initView() {
+        scope.launch {
+            val adapter =
+                MainRecyclerViewAdapter(MainApplication.appContext!!, dramaResults, object : MainRecyclerViewAdapter.OnItemClickListener {
+                    override fun onItemClick(item: DataRealm) {
+                    }
+                }, true)
+
+            val recyclerView : RecyclerView = findViewById(R.id.recycler_view)
+            recyclerView.setHasFixedSize(true)
+            recyclerView.layoutManager = LinearLayoutManager(MainApplication.appContext!!)
+            recyclerView.adapter = adapter
+
+            dramaResults!!.addChangeListener(RealmChangeListener { element ->
+                // data is loaded or written to/updated
+                adapter.notifyDataSetChanged()
+                progressBar!!.visibility = View.INVISIBLE
+            })
+        }
     }
 
     override fun onStart() {
@@ -70,6 +112,8 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         scope.cancel()
+        dramaResults!!.removeAllChangeListeners()
+        dramaResults = null
     }
 
 

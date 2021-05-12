@@ -1,4 +1,4 @@
-package com.example.dramas_sample.database
+package com.example.dramas_sample.database.module
 
 import io.realm.Realm
 import io.realm.RealmConfiguration
