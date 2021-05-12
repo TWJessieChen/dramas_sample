@@ -58,11 +58,14 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.3'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.4.3'
 
     implementation "com.squareup.okhttp3:okhttp:4.5.0"
     implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'io.realm:android-adapters:3.0.0'
     implementation 'com.google.code.gson:gson:2.8.6'
+
+    implementation("ru.gildor.coroutines:kotlin-coroutines-okhttp:1.0")
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

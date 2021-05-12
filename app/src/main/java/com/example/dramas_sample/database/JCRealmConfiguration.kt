@@ -4,7 +4,7 @@ import io.realm.Realm
 import io.realm.RealmConfiguration
 import io.realm.exceptions.RealmFileException
 
-class JCRealmConfiguration {
+object JCRealmConfiguration {
 
     private val CURRENT_DRAMAS_SCHEMA_VERSION: Long = 1
 
