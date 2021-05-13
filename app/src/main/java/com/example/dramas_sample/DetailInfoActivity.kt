@@ -13,6 +13,13 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
+/**
+ *
+ * 詳細頁面
+ *
+ * @author JC666
+ */
+
 class DetailInfoActivity : AppCompatActivity() {
     private val TAG = DetailInfoActivity::class.java.simpleName
 

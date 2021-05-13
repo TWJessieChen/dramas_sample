@@ -24,6 +24,14 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
+/**
+ *
+ * 主頁面(MVVM架構設計)
+ * 使用SharedPreferences來儲存query key word
+ *
+ * @author JC666
+ */
+
 class MainActivity : AppCompatActivity() {
     private val TAG = MainActivity::class.java.simpleName
 
@@ -172,6 +180,7 @@ class MainActivity : AppCompatActivity() {
             isWifiEnabled = true
         } else {
             Toast.makeText(this, R.string.prompt_disabling_wifi, Toast.LENGTH_SHORT).show()
+            isWifiEnabled = false
         }
 
     }
@@ -201,6 +210,5 @@ class MainActivity : AppCompatActivity() {
         dramaResults!!.removeAllChangeListeners()
         dramaResults = null
     }
-
 
 }

@@ -19,6 +19,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 
+/**
+ *
+ * ViewModel架構
+ * 使用LiveData
+ * 使用CoroutineScope
+ *
+ * @author JC666
+ */
 
 class MainViewModel  : ViewModel() {
     private val TAG = MainViewModel::class.java.simpleName

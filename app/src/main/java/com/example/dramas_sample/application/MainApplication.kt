@@ -7,6 +7,13 @@ import android.content.SharedPreferences
 import android.util.Log
 import io.realm.Realm
 
+/**
+ *
+ * Application()初始建置
+ *
+ * @author JC666
+ */
+
 class MainApplication  : Application() {
     private val TAG = MainApplication::class.java.simpleName
 
@@ -25,7 +32,6 @@ class MainApplication  : Application() {
 
     }
 
-
     companion object {
         private val TAG = MainApplication::class.java.simpleName
         var appContentResolver: ContentResolver? = null
@@ -34,6 +40,5 @@ class MainApplication  : Application() {
 
         var pref: SharedPreferences? = null
     }
-
 
 }

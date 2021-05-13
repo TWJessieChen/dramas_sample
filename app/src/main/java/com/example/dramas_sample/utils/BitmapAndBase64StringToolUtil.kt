@@ -5,6 +5,13 @@ import android.graphics.BitmapFactory
 import android.util.Base64
 import java.io.ByteArrayOutputStream
 
+/**
+ *
+ * 主要用於Bitmap to base64 ,or base64 to bitmap fun
+ *
+ * @author JC666
+ */
+
 object BitmapAndBase64StringToolUtil {
 
     fun convertBytesToB64String(bytes: ByteArray): String? {

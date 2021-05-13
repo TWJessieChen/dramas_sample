@@ -12,6 +12,14 @@ import com.example.dramas_sample.utils.BitmapAndBase64StringToolUtil
 import io.realm.OrderedRealmCollection;
 import io.realm.RealmRecyclerViewAdapter;
 
+/**
+ *
+ * 使用RealmRecyclerViewAdapter，可以動態刷新資料，利用Realm的特性，隨時動態更新
+ * 建置 interface OnItemClickListener，callback到activity，來進行後續動作
+ *
+ * @author JC666
+ */
+
 class MainRecyclerViewAdapter(private val context: Context,
                               private var dataList: OrderedRealmCollection<DataRealm>?,
                               private var listener: OnItemClickListener,
@@ -19,8 +27,6 @@ class MainRecyclerViewAdapter(private val context: Context,
     RealmRecyclerViewAdapter<DataRealm, MainRecyclerViewAdapter.MainRecyclerViewHolder>(dataList, autoUpdate) {
 
     private val TAG = MainRecyclerViewAdapter::class.java.simpleName
-
-
 
     override fun getItemCount(): Int = dataList?.size ?: 0
 
@@ -44,8 +50,6 @@ class MainRecyclerViewAdapter(private val context: Context,
         holder.tv_createdAt.text = data.created_at
 
         holder.tv_rating.text = data.rating
-
-//        holder.tv_rating.text = data.rating!!.toBigDecimal().toPlainString()
 
     }
 

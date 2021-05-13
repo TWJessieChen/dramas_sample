@@ -3,6 +3,14 @@ package com.example.dramas_sample.database.model
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 
+/**
+ *
+ * 使用Realm 設計database需儲存那些資訊
+ *
+ * @author JC666
+ */
+
+
 open class DataRealm (
     @field:PrimaryKey
     var drama_id: Int? = 0,

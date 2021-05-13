@@ -8,6 +8,13 @@ import io.realm.Case
 import io.realm.Realm
 import io.realm.RealmResults
 
+/**
+ *
+ * 使用Realm SDK來設計database
+ *
+ * @author JC666
+ */
+
 object JCDatabaseManager {
     private val TAG = JCDatabaseManager::class.java.simpleName
 

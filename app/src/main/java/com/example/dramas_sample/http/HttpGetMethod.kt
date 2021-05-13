@@ -1,13 +1,21 @@
 package com.example.dramas_sample.http
 
 import android.util.Log
-import com.example.dramas_sample.MainViewModel
 import com.example.dramas_sample.data.DramaList
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okio.IOException
 import ru.gildor.coroutines.okhttp.await
+
+/**
+ *
+ * 使用okhttp3 sdk 跟 gildor/kotlin-coroutines-okhttp sdk，一起搭配使用
+ * 可以達到Kotlin coroutines await extension for OkHttp功效
+ *
+ * @author JC666
+ */
+
 
 object HttpGetMethod {
     private val TAG = HttpGetMethod::class.java.simpleName
